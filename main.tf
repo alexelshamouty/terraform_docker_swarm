@@ -31,6 +31,6 @@ resource "google_compute_instance" "worker" {
     }
 
     metadata = {
-        environment = gcp.environment
+        environment = var.gcp_environment
     }
 }
