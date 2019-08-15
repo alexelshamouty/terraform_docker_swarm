@@ -16,6 +16,28 @@ resource "google_compute_network" "swarm_network" {
 resource "google_compute_instance" "worker" {
     count           = var.gcp_workers_number
     name            =  "worker"
+    machine_type    = var.gcp_worker_instance_type 
+    zone            = var.gcp_zone
+    can_ip_forward  = true
+
+    boot_disk {
+        initialize_params {
+            image  = var.gcp_image_id
+        }
+    }
+
+    network_interface {
+        network = var.gcp_network_name
+    }
+
+    metadata = {
+        environment = var.gcp_environment
+    }
+}
+
+resource "google_compute_instance" "manager" {
+    count           = var.gcp_nodes_number
+    name            =  "manager"
     machine_type    = var.gcp_manager_instance_type 
     zone            = var.gcp_zone
     can_ip_forward  = true
