@@ -32,7 +32,7 @@ resource "google_compute_firewall" "default" {
     }
 
     source_ranges = ["0.0.0.0/0"]
-    
+
 }
 
 resource "google_compute_instance" "worker" {
@@ -78,3 +78,4 @@ resource "google_compute_instance" "manager" {
         environment = var.gcp_environment
     }
 }
+
