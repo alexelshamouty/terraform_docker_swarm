@@ -13,8 +13,27 @@ resource "google_compute_network" "swarm_network" {
     auto_create_subnetworks = true
 }
 
+resource "google_compute_firewall" "default" {
+    name = "swarm-firewall"
+    network = var.gcp_network_name
+
+    allow {
+        protocol = "icmp"
+    }
+
+    allow {
+        protocol = "tcp"
+        ports = ["22","2376","2377","7946"]
+    }
+
+    allow {
+        protocol = "udp"
+        ports = ["7964","4789","53"]
+    }
+}
+
 resource "google_compute_instance" "worker" {
-    count           = var.gcp_workers_number
+    count           = var.gcp_nodes_number
     name            =  "worker"
     machine_type    = var.gcp_worker_instance_type 
     zone            = var.gcp_zone
@@ -36,7 +55,7 @@ resource "google_compute_instance" "worker" {
 }
 
 resource "google_compute_instance" "manager" {
-    count           = var.gcp_nodes_number
+    count           = var.gcp_workers_number
     name            =  "manager"
     machine_type    = var.gcp_manager_instance_type 
     zone            = var.gcp_zone
