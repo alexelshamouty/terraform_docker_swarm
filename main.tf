@@ -30,6 +30,9 @@ resource "google_compute_firewall" "default" {
         protocol = "udp"
         ports = ["7964","4789","53"]
     }
+
+    source_ranges = ["0.0.0.0/0"]
+    
 }
 
 resource "google_compute_instance" "worker" {
